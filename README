@@ -1,0 +1,7 @@
+If you ever need to use Capistrano 2 with virtual hosts on Nginx this article may save you some time by automating the process.
+
+The article assumes that for each vhost you want to define a nginx configuration file which gets placed in /etc/nginx/sites-available/ and symlinked to sites-enabled. If you just want one big nginx file with all your vhosts in it, then this article won’t help!
+
+What we want is for Capistrano to auto generate the nginx configuration using a shared configuration template and place it on the server. E.g.
+
+Original Idea: http://www.subreview.com/articles/6

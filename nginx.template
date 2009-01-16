@@ -1,0 +1,39 @@
+upstream merb {
+	server 127.0.0.1:4000;
+	server 127.0.0.1:4001;
+}
+
+server {
+	listen 80;
+	server_name slice.legodata.com;
+
+	root /home/deploy/legodata/slice/current/public;
+
+	access_log /home/deploy/legodata/slice/shared/log/access.log;
+	error_log /home/deploy/legodata/slice/shared/log/error.log;
+
+	location / {
+
+		proxy_set_header  X-Real-IP       $remote_addr;
+		proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header  Host            $http_host;
+
+		proxy_redirect false;
+		proxy_max_temp_file_size 0;
+      
+		if (-f $request_filename) {
+			break;
+		}
+      
+		if (-f $request_filename.html) {
+			rewrite (.*) $1.html break;
+		}
+      
+		if (!-f $request_filename) {
+			proxy_pass http://merb;
+			break;
+		}
+
+	} # location
+    
+} # server

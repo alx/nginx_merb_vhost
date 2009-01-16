@@ -1,15 +1,15 @@
-set :application, "set your application name here"
-set :repository,  "set your repository location here"
+role :app, "legodata.com"
 
-# If you aren't deploying to /u/apps/#{application} on the target
-# servers (which is the default), you can specify the actual location
-# via the :deploy_to variable:
-# set :deploy_to, "/var/www/#{application}"
+set :domain, application # for use in the template
 
-# If you aren't using Subversion to manage your source code, specify
-# your SCM below:
-# set :scm, :subversion
+set :merb_port, 8500 # starting port for the merb stream
+set :merbs, 2 # number of merb stream
 
-role :app, "your app-server here"
-role :web, "your web-server here"
-role :db,  "your db-server here", :primary => true
+set :public_html, "/home/deploy/legodata/" # folder where the apps are deployed to
+set :deploy_to, "#{public_html}#{application}"
+
+set :nginx_remote_template, "nginx.template"
+set :nginx_remote_config, "nginx.#{application}"
+
+set :spin_remote_template, "#{spin.template}"
+set :spin_remote_config, "#{deploy_to}/current/script/spin"
